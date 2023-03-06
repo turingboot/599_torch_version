@@ -20,7 +20,7 @@ warnings.filterwarnings('ignore')
 # Set random seeds
 BATCH_SIZE = 64
 RANDOM_SEED = 42
-seq_len = 24*3
+seq_len = 48*3
 np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
 # Defining the equipment for training
@@ -59,7 +59,7 @@ test_data_loader = create_data_loader(df_test, seq_len=seq_len, batch_size=BATCH
 input_size = 14  # number of features
 hidden_size = 256  # number of features in hidden state
 num_layers = 1  # number of stacked lstm layers
-num_classes = 1  # number of output classes
+num_classes = 48*3  # number of output classes
 weight_decay = 0.0001  # 权重衰减系数
 # 导入网络模型
 # sm_model = lstm.LSTM(num_classes, input_size, hidden_size, num_layers, device=device)
@@ -76,7 +76,7 @@ criterion = criterion.to(device)
 lr = 1e-3
 optimizer = torch.optim.Adam(sm_model.parameters(), lr=lr,weight_decay=weight_decay)
 # 训练的轮数
-epochs = 30
+epochs = 1
 best_loss = 9999.0
 # 开始训练循环
 history = defaultdict(list)
