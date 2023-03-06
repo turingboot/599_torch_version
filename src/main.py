@@ -77,7 +77,7 @@ lr = 1e-3
 optimizer = torch.optim.Adam(sm_model.parameters(), lr=lr,weight_decay=weight_decay)
 # 训练的轮数
 epochs = 1
-best_loss = 9999.0
+best_loss = 99999.0
 # 开始训练循环
 history = defaultdict(list)
 for step in range(epochs):
