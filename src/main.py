@@ -20,7 +20,7 @@ warnings.filterwarnings('ignore')
 # Set random seeds
 BATCH_SIZE = 64
 RANDOM_SEED = 42
-seq_len = 48*3
+seq_len = 10
 np.random.seed(RANDOM_SEED)
 torch.manual_seed(RANDOM_SEED)
 # Defining the equipment for training
@@ -33,6 +33,7 @@ df = pd.read_csv("../dataset/train/FLX_AT-Neu_FLUXNET2015_FULLSET_HH_2002-2012_1
 df_train, df_test = train_test_split(
     df,
     test_size=0.2,
+    random_state=0,
     shuffle=False
 )
 
@@ -42,6 +43,7 @@ df_val, df_test = train_test_split(
     random_state=0,
     shuffle=False
 )
+
 mm = MinMaxScaler()
 ss = StandardScaler()
 normalize_func = [mm, ss]
@@ -59,11 +61,11 @@ test_data_loader = create_data_loader(df_test, seq_len=seq_len, batch_size=BATCH
 input_size = 14  # number of features
 hidden_size = 256  # number of features in hidden state
 num_layers = 1  # number of stacked lstm layers
-num_classes = 48*3  # number of output classes
+num_classes = 1  # number of output classes
 weight_decay = 0.0001  # 权重衰减系数
 # 导入网络模型
 # sm_model = lstm.LSTM(num_classes, input_size, hidden_size, num_layers, device=device)
-
+#
 sm_model = Seq2Seq(channel_num=input_size, hidden_size=hidden_size, num_layers=num_layers,
                    output_size=num_classes, batch_size=BATCH_SIZE, device=device)
 
@@ -74,7 +76,7 @@ criterion = nn.MSELoss(reduction='mean')
 criterion = criterion.to(device)
 # 优化器
 lr = 1e-3
-optimizer = torch.optim.Adam(sm_model.parameters(), lr=lr,weight_decay=weight_decay)
+optimizer = torch.optim.Adam(sm_model.parameters(), lr=lr, weight_decay=weight_decay)
 # 训练的轮数
 epochs = 1
 best_loss = 99999.0
